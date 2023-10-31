@@ -1,7 +1,7 @@
 <?php
 
 namespace Tests\Feature\Services;
-use App\Services\WeatherServices;
+use App\Services\WeatherService;
 use Tests\TestCase;
 
 class MeteoServicesTest extends TestCase
@@ -11,7 +11,7 @@ class MeteoServicesTest extends TestCase
     public function setUp():void
     {
         parent::setUp();
-        $this->weatherService = new WeatherServices();
+        $this->weatherService = new WeatherService();
     }
     public function testGetInstantWeather()
     {

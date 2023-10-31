@@ -2,8 +2,9 @@
 namespace App\Services;
 
 use GuzzleHttp\Client;
+use App\Interfaces\WeatherInterface;
 
-class WeatherServices
+class WeatherService implements WeatherInterface
 {
     protected $client;
 
