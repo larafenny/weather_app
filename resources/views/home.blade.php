@@ -17,5 +17,15 @@
 </head>
 <body class="antialiased">
 hi Lara, this is you new weather app
+
+<form action="{{ url('get-weather') }}" method="POST">
+    @csrf
+    <input type="text" name="city" placeholder="Inserisci una città">
+    <button type="submit">Vai</button>
+</form>
+
+@if(isset($weather))
+    Temperature: {{ $weather['main']['temp'] }}
+@endif
 </body>
 </html>
