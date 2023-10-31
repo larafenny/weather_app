@@ -15,46 +15,56 @@ class WeatherServices
     }
     public function getInstantWeather($lat, $lon)
     {
-        $response = $this->client->request('GET', '/data/2.5/weather', [
-            'query' => [
-                'lat' => $lat,
-                'lon' => $lon,
-                'appid' => config('weather.api_key'),
-                'units' => 'metric',
-                'lang' => 'it'
-            ]
-        ]);
-
-        return json_decode($response->getBody()->getContents(), true);
+        try {
+            $response = $this->client->request('GET', '/data/2.5/weather', [
+                'query' => [
+                    'lat' => $lat,
+                    'lon' => $lon,
+                    'appid' => config('weather.api_key'),
+                    'units' => 'metric',
+                    'lang' => 'it'
+                ]
+            ]);
+            return json_decode($response->getBody()->getContents(), true);
+        } catch (Exception $e) {
+            throw new Exception('Error retrieving weather from API, error: ' . $e->getMessage());
+        }
     }
 
     public function getLatAndLongFromCity($city)
     {
-        $response = $this->client->request('GET', '/geo/1.0/direct', [
-            'query' => [
-                'q' => $city,
-                'appid' => config('weather.api_key'),
-            ]
-        ]);
+        try {
+            $response = $this->client->request('GET', '/geo/1.0/direct', [
+                'query' => [
+                    'q' => $city,
+                    'appid' => config('weather.api_key'),
+                ]
+            ]);
 
-        $result = json_decode($response->getBody()->getContents(), true);
+            $result = json_decode($response->getBody()->getContents(), true);
 
-        return [
-            'latitude' => $result[0]['lat'],
-            'longitude' => $result[0]['lon']
-        ];
+            return [
+                'latitude' => $result[0]['lat'],
+                'longitude' => $result[0]['lon']
+            ];
+        } catch (Exception $e) {
+            throw new Exception('Error retrieving latitude and longitude from city name, error: ' . $e->getMessage());
+        }
     }
 
     public function getLatitudeAndLongitudeFromZipCode($zipCode)
     {
-        $response = $this->client->request('GET', 'geo/1.0/zip', [
-            'query' => [
-                'zip' => "$zipCode,IT",
-                'appid' => config('weather.api_key'),
-            ]
-        ]);
+        try {
+            $response = $this->client->request('GET', 'geo/1.0/zip', [
+                'query' => [
+                    'zip' => "$zipCode,IT",
+                    'appid' => config('weather.api_key'),
+                ]
+            ]);
 
-        return json_decode($response->getBody()->getContents(), true);
+            return json_decode($response->getBody()->getContents(), true);
+        } catch (Exception $e) {
+            throw new Exception('Error retrieving latitude and longitude from zip code, error: ' . $e->getMessage());
+        }
     }
-
 }
